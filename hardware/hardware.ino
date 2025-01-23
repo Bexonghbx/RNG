@@ -121,7 +121,7 @@ void setup() {
   
 
   initialize();           // INIT WIFI, MQTT & NTP 
-  // vButtonCheckFunction(); // UNCOMMENT IF USING BUTTONS THEN ADD LOGIC FOR INTERFACING WITH BUTTONS IN THE vButtonCheck FUNCTION
+  vButtonCheckFunction(); // UNCOMMENT IF USING BUTTONS THEN ADD LOGIC FOR INTERFACING WITH BUTTONS IN THE vButtonCheck FUNCTION
 
 }
   
@@ -129,7 +129,7 @@ void setup() {
 
 void loop() {
     // put your main code here, to run repeatedly: 
-    
+  vButtonCheckFunction();
 }
 
 
@@ -145,7 +145,7 @@ void vButtonCheck( void * pvParameters )  {
     for( ;; ) {
         // Add code here to check if a button(S) is pressed
         if(digitalRead(BTN_A)==LOW){
-
+          GDP();
         }
         // then execute appropriate function if a button is pressed  
 
@@ -367,17 +367,17 @@ void Display(unsigned char number){
 
 int8_t getLEDStatus(int8_t LED) {
   // RETURNS THE STATE OF A SPECIFIC LED. 0 = LOW, 1 = HIGH
-  if(LED == "LED A"){
+  if(LED == LED_A){
     return digitalRead(LED_A);  
   }
-  else if(LED == "LED B"){
+  else if(LED == LED_B){
     return digitalRead(LED_B);  
   }
 }
 
 void setLEDState(int8_t LED, int8_t state){
   // SETS THE STATE OF A SPECIFIC LED 
-  if(LED == "LED A"){
+  if(LED == LED_A){
     if(state == LOW){
       digitalWrite(LED_A, HIGH);
     }
@@ -385,7 +385,7 @@ void setLEDState(int8_t LED, int8_t state){
       digitalWrite(LED_A, LOW);
     }
   }
-  else if(LED == "LED B"){
+  else if(LED == LED_B){
     if(state == LOW){
       digitalWrite(LED_B, HIGH);
     }
@@ -397,7 +397,7 @@ void setLEDState(int8_t LED, int8_t state){
 
 void toggleLED(int8_t LED){
   // TOGGLES THE STATE OF SPECIFIC LED 
-  if(LED == "LED A"){
+  if(LED == LED_A){
     if(digitalRead(LED_A) == LOW){
       digitalWrite(LED_A, HIGH);
     }
@@ -405,7 +405,7 @@ void toggleLED(int8_t LED){
       digitalWrite(LED_A, LOW);
     }
   }
-  else if(LED == "LED B"){
+  else if(LED == LED_B){
     if(digitalRead(LED_B) == LOW){
       digitalWrite(LED_B, HIGH);
     }
@@ -437,8 +437,8 @@ void GDP(void){
   doc["id"]         = "620148117"; // Change to your student ID number
   doc["timestamp"]  = getTimeStamp();
   doc["number"]     = number;
-  doc["ledA"]       = getLEDState("LED A");
-  doc["ledB"]       = getLEDState("LED B");
+  doc["ledA"]       = getLEDStatus(LED_A);
+  doc["ledB"]       = getLEDStatus(LED_B);
   /*Add code here to insert all other variabes that are missing from Json object
   according to schema above
   */
