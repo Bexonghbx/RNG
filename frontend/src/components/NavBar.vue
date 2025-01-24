@@ -17,6 +17,10 @@
                             <RouterLink class="route" to="/intro"> 
                                 <VBtn class="text-subtitle-2" density="compact" color="primary" :variant="(route.name == 'Intro')? 'tonal':'text'">Intro</VBtn>
                             </RouterLink>       
+
+                            <RouterLink class="route" to="/graph">
+                                <VBtn class="text-subtitle-2" density="compact" color="primary" :variant="(route.name == 'Graph')? 'tonal':'text'">Graph</VBtn> 
+                            </RouterLink>
                                             
 
                         </VCol>
