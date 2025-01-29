@@ -29,37 +29,37 @@
 // DEFINE VARIABLES
 #define ARDUINOJSON_USE_DOUBLE      1 
 // DEFINE THE PINS THAT WILL BE MAPPED TO THE 7 SEG DISPLAY BELOW, 'a' to 'g'
-#define a     15
+#define a     12
 #define b     32
 #define c     33
-#define d     25
-#define e     26
-#define f     27
-#define g     14
-#define dp    12
+#define d     15
+#define e     16
+#define f     4
+#define g     17
+#define dp    26
 /* Complete all others */
 
 
 
 // DEFINE VARIABLES FOR TWO LEDs AND TWO BUTTONs. LED_A, LED_B, BTN_A , BTN_B
-#define LED_A 4
-#define LED_B 16
-#define BTN_A 2
+#define LED_A 22
+#define LED_B 25
+#define BTN_A 21
 /* Complete all others */
 
 
 
 // MQTT CLIENT CONFIG  
 static const char* pubtopic       = "620148117";                    // Add your ID number here
-static const char* subtopic[]     = {"620012345_sub","/elet2415"};  // Array of Topics(Strings) to subscribe to
-static const char* mqtt_server    = "address or ip";                // Broker IP address or Domain name as a String 
+static const char* subtopic[]     = {"620148117_sub","/elet2415"};  // Array of Topics(Strings) to subscribe to
+static const char* mqtt_server    = "yanacreations.com";                // Broker IP address or Domain name as a String 
 static uint16_t mqtt_port         = 1883;
 
 // WIFI CREDENTIALS
 const char* ssid                  = "MonaConnect"; // Add your Wi-Fi ssid
 const char* password              = ""; // Add your Wi-Fi password 
-//const char* ssid                  = "MonaConnect"; // Add your Wi-Fi ssid
-//const char* password              = "YOUR_PASS"; // Add your Wi-Fi password 
+//const char* ssid                  = "UNTC-Connect"; // Add your Wi-Fi ssid
+//const char* password              = "risenlord^19"; // Add your Wi-Fi password 
 
 
 
@@ -114,6 +114,8 @@ void setup() {
   pinMode(f, OUTPUT);
   pinMode(g, OUTPUT);
   pinMode(dp, OUTPUT);
+  pinMode(2, OUTPUT);
+  digitalWrite(2, HIGH);
   /* Configure all others here */
   pinMode(LED_A,OUTPUT);
   pinMode(LED_B,OUTPUT);
@@ -129,7 +131,6 @@ void setup() {
 
 void loop() {
     // put your main code here, to run repeatedly: 
-  vButtonCheckFunction();
 }
 
 
@@ -145,6 +146,7 @@ void vButtonCheck( void * pvParameters )  {
     for( ;; ) {
         // Add code here to check if a button(S) is pressed
         if(digitalRead(BTN_A)==LOW){
+          delay(200);
           GDP();
         }
         // then execute appropriate function if a button is pressed  

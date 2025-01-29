@@ -69,13 +69,16 @@ class Ntp {
               return;
             }
             // Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-             Serial.println(&timeinfo, "%B %d, %Y    %I:%M %p");  
+             Serial.println(&timeinfo, "%B %d, %Y    %I:%M %p");
+             Serial.println("Problem 11");  
         }
 
         // Callback function (get's called when time adjusts via NTP)
         static void timeavailable(struct timeval *t) {
           Serial.println("Got time adjustment from NTP!");
           printLocalTime();
+          Serial.println("Problem 10");
+          Serial.println(ESP.getMaxAllocHeap());
         }
           
         unsigned long getTime(){
@@ -87,11 +90,14 @@ class Ntp {
               if (!getLocalTime(&timeinfo)) {
                 Serial.println("Failed to obtain time, NTP");
                 return(0);
+                
+                Serial.println("Problem 8");
               }
               // Serial.println(&timeinfo, "%B %d, %Y    %I:%M %p");
               // Retrieve time[Timestamp] from system and save to &now variable
               time(&now); 
               return now;  
+              Serial.println("Problem 9");
         } 
  
         unsigned long getTimeStamp(void){
@@ -99,10 +105,12 @@ class Ntp {
             time_t now;  
             time(&now); // Retrieve time[Timestamp] from system and save to &now variable
             return now;
+            Serial.println("Problem 7");
         }
 
         void setup(){
             // set notification call-back function
+            Serial.println("Problem 3");
             sntp_set_time_sync_notification_cb( timeavailable );
             /**
               * NTP server address could be aquired via DHCP,
@@ -112,6 +120,7 @@ class Ntp {
               * NOTE: configTime() function call if made AFTER DHCP-client run
               * will OVERRIDE aquired NTP server address
               */
+            Serial.println("Problem 4");
             sntp_servermode_dhcp(1);    // (optional)
             /**
             * This will set configured ntp servers and constant TimeZone/daylightOffset
@@ -119,7 +128,9 @@ class Ntp {
             * in such a case time adjustment won't be handled automagicaly.
             */
             // configTime(gmtOffset_sec, daylightOffset_sec, ntpServer1, ntpServer2);
+            Serial.println("Problem 5");
             configTzTime(this->time_zone, ntpServer1, ntpServer2);              
+            Serial.println("Problem 6");
         } 
 
 
@@ -137,7 +148,9 @@ void vNTP( void * pvParameters ) {
       // NTP.printLocalTime();     // it will take some time to sync time :)  
       // NTP.getTime();
       // checkHEAP("NTP");   
+      Serial.println("Problem 1");
       vTaskDelay(60000 / portTICK_PERIOD_MS);  // DELAY FOR 5 SECONDS  
+      Serial.println("Problem 2");
     }     
  }
 
@@ -145,6 +158,7 @@ void vNTP( void * pvParameters ) {
 
 // Function that creates a task.
 void vNTPFunction( void ) {
+    Serial.println("Problem 12");
     BaseType_t xReturned;
 
     // Create the task, storing the handle. 
@@ -163,5 +177,6 @@ void vNTPFunction( void ) {
     }
     else {
        Serial.println("UNABLE TO CREATE NTP PROTOCOL TASK");
+       for( ;; ){Serial.println(String(xReturned));  }
     }
 }

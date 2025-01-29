@@ -51,11 +51,15 @@
 // IMPORTS
 import { ref,reactive,watch ,onMounted,onBeforeUnmount,computed } from "vue";  
 import { useRoute ,useRouter } from "vue-router";
+import { useMqttStore } from '@/store/mqttStore'; // Import Mqtt Store 
+import { storeToRefs } from "pinia"; 
  
  
 // VARIABLES
 const router      = useRouter();
-const route       = useRoute();  
+const route       = useRoute(); 
+const Mqtt        = useMqttStore(); 
+const { payload, payloadTopic } = storeToRefs(Mqtt);  
 const toggle      = (name) => 
 {let message = JSON.stringify({"type":"toggle","device": name}); // Create message and convert to a json string 
 Mqtt.publish("topic",message);}   // Publish message to appropriate topic  
@@ -64,11 +68,19 @@ Mqtt.publish("topic",message);}   // Publish message to appropriate topic
 // FUNCTIONS
 onMounted(()=>{
     // THIS FUNCTION IS CALLED AFTER THIS COMPONENT HAS BEEN MOUNTED
+    Mqtt.connect(); // Connect to Broker located on the backend 
+
+    setTimeout( ()=>{ 
+        // Subscribe to each topic 
+        Mqtt.subscribe("620148117"); 
+        Mqtt.subscribe("620148117_pub"); 
+    },3000); 
 });
 
 
 onBeforeUnmount(()=>{
     // THIS FUNCTION IS CALLED RIGHT BEFORE THIS COMPONENT IS UNMOUNTED
+    Mqtt.unsubcribeAll(); 
 });
 
 
