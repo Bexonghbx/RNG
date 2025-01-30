@@ -42,8 +42,8 @@
 
 
 // DEFINE VARIABLES FOR TWO LEDs AND TWO BUTTONs. LED_A, LED_B, BTN_A , BTN_B
-#define LED_A 22
-#define LED_B 25
+#define LED_A 25
+#define LED_B 22
 #define BTN_A 21
 /* Complete all others */
 
@@ -220,9 +220,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
     if(strcmp(led, "LED A") == 0){
       /*Add code to toggle LED A with appropriate function*/
+      toggleLED(LED_A);
     }
     if(strcmp(led, "LED B") == 0){
       /*Add code to toggle LED B with appropriate function*/
+      toggleLED(LED_B);
     }
 
     // PUBLISH UPDATE BACK TO FRONTEND
@@ -231,14 +233,17 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
     // Add key:value pairs to Json object according to below schema
     // ‘{"id": "student_id", "timestamp": 1702212234, "number": 9, "ledA": 0, "ledB": 0}’
-    doc["id"]         = "ID"; // Change to your student ID number
+    doc["id"]         = "620148117"; // Change to your student ID number
     doc["timestamp"]  = getTimeStamp();
+    doc["number"]     = number;
+    doc["ledA"]       = getLEDStatus(LED_A);
+    doc["ledB"]       = getLEDStatus(LED_B);
     /*Add code here to insert all other variabes that are missing from Json object
     according to schema above
     */
 
     serializeJson(doc, message);  // Seralize / Covert JSon object to JSon string and store in char* array  
-    publish("topic", message);    // Publish to a topic that only the Frontend subscribes to.
+    publish("620148117", message);    // Publish to a topic that only the Frontend subscribes to.
           
   } 
 
@@ -399,22 +404,12 @@ void setLEDState(int8_t LED, int8_t state){
 
 void toggleLED(int8_t LED){
   // TOGGLES THE STATE OF SPECIFIC LED 
-  if(LED == LED_A){
-    if(digitalRead(LED_A) == LOW){
-      digitalWrite(LED_A, HIGH);
-    }
-    else{
-      digitalWrite(LED_A, LOW);
-    }
+  if (digitalRead(LED)){
+      digitalWrite(LED, LOW);
   }
-  else if(LED == LED_B){
-    if(digitalRead(LED_B) == LOW){
-      digitalWrite(LED_B, HIGH);
+  else {
+      digitalWrite(LED, HIGH);
     }
-    else{
-      digitalWrite(LED_B, LOW);
-    }  
-  } 
 }
 
 void GDP(void){
